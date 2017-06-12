@@ -1,8 +1,6 @@
 package dominoes.players
 
 import dominoes._
-import org.scalacheck.Properties
-import org.scalacheck.Prop.forAll
 
 class DominoPlayer1 extends DominoPlayer { 
 
@@ -24,22 +22,57 @@ class DominoPlayer1 extends DominoPlayer {
 
   def getPoints(): Int = points
 
+/*
+  // we get a stack overflow if we do it this way and play them against each other
+  // so do it non-recursively
   def makePlay(table: Table): Play = {
-    val play = choosePlay
-    val bone = play.bone
-    val playString = s"${bone.left}:${bone.right} at ${play.end}"
+    val play: Play = choosePlay
+    val bone = play.bone()
+    //val playString = s"${bone.left}:${bone.right} at ${play.end}"
+    //val playString = bone.left + ":" + bone.right + " at " + play.end
+    val playString = "FOO"
 
     try { 
-      //output(s"Attempting: $playString") 
+      output(s"Attempting: $playString") 
+      output(s"Accepted: $playString") 
       table.play(play)
-      //output(s"Accepted: $playString") 
-    } catch { 
+      play
+    } 
+    catch { 
       case e: InvalidPlayException => { 
         takeBack(bone)
         makePlay(table)
+        //play
       }
-    }
+    }  
   }
+  */
+
+  def makePlay(table: Table): Play = {
+
+    var playNotMade = true 
+    var play: Play = null
+
+    while (playNotMade) { 
+      play = choosePlay
+      val bone = play.bone()
+      val playString = bone.left + ":" + bone.right + " at " + play.end
+      output(s"Attempting: $playString") 
+      try { 
+        //val playString = s"${bone.left}:${bone.right} at ${play.end}"
+        table.play(play)
+        output(s"Accepted: $playString ##########################") 
+        playNotMade = false
+      } 
+      catch { 
+        case e: InvalidPlayException => { 
+          takeBack(bone)
+        }
+      }  
+    }
+    play
+  }
+
 
   def newRound(): Unit = bones = Array[Bone]()
 
@@ -50,7 +83,8 @@ class DominoPlayer1 extends DominoPlayer {
   def setPoints(newScore: Int): Unit = points = newScore 
 
   def takeBack(bone: Bone): Unit = { 
-    val s = "Rejected: ${bone.left}:${bone.right}"
+    val playString = bone.left + ":" + bone.right
+    val s = "Rejected: " + playString
     output(s)
   }
 
@@ -66,7 +100,9 @@ class DominoPlayer1 extends DominoPlayer {
       else Play.LEFT
     }
 
-    new Play(bone, end)
+    val p = new Play(bone, end)
+    //println(p.bone.left)
+    p
   }
 
   //def setPlayChooser(pc: PlayChooser): Unit = playChooser = pc 
