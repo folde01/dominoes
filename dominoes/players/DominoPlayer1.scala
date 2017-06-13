@@ -4,91 +4,73 @@ import dominoes._
 
 class DominoPlayer1 extends DominoPlayer { 
 
+  val id = scala.util.Random.nextInt(100000)
+
+  var counter = 0  
+
+  var shouldLog = true
   var name: String = "not set" 
   var points = 0 
   var bones = Array[Bone]()
   //def getBones = bones
   //var playChooser: PlayChooser = null
 
-  def bonesInHand(): Array[Bone] = bones 
+  def bonesInHand(): Array[Bone] = { 
+    log("bonesInHand: " + bones)
+    bones 
+  }
 
   def draw(yard: BoneYard): Unit = { 
     val bone = yard.draw()
     if (bone != null) 
       bones = bones :+ bone 
+    log("draw: " + bone.left + ":" + bone.right) 
   }
 
   def getName(): String = name 
 
-  def getPoints(): Int = points
-
-/*
-  // we get a stack overflow if we do it this way and play them against each other
-  // so do it non-recursively
-  def makePlay(table: Table): Play = {
-    val play: Play = choosePlay
-    val bone = play.bone()
-    //val playString = s"${bone.left}:${bone.right} at ${play.end}"
-    //val playString = bone.left + ":" + bone.right + " at " + play.end
-    val playString = "FOO"
-
-    try { 
-      output(s"Attempting: $playString") 
-      output(s"Accepted: $playString") 
-      table.play(play)
-      play
-    } 
-    catch { 
-      case e: InvalidPlayException => { 
-        takeBack(bone)
-        makePlay(table)
-        //play
-      }
-    }  
+  def getPoints(): Int = { 
+    log("getPoints: " + points)
+    points
   }
-  */
 
   def makePlay(table: Table): Play = {
-
-    var playNotMade = true 
-    var play: Play = null
-
-    while (playNotMade) { 
-      play = choosePlay
-      val bone = play.bone()
-      val playString = bone.left + ":" + bone.right + " at " + play.end
-      output(s"Attempting: $playString") 
-      try { 
-        //val playString = s"${bone.left}:${bone.right} at ${play.end}"
-        table.play(play)
-        output(s"Accepted: $playString ##########################") 
-        playNotMade = false
-      } 
-      catch { 
-        case e: InvalidPlayException => { 
-          takeBack(bone)
-        }
-      }  
-    }
+    val play = choosePlay
+    val bone = play.bone()
+    val playString = bone.left + ":" + bone.right + " at " + play.end
+    log(s"makePlay attempting: $playString") 
+    val newbones = bones.filter(_ != bone)
+    bones = newbones
+    table.play(play)
+    Thread sleep 1000
+    log(s"Accepted: $playString") 
     play
   }
 
+  def newRound(): Unit = { 
+    log("new round")
+    bones = Array[Bone]()
+  }
 
-  def newRound(): Unit = bones = Array[Bone]()
-
-  def numInHand(): Int = bones.length 
+  def numInHand(): Int = { 
+    log("numInHand: " + bones.length)
+    bones.length 
+  }
 
   def setName(n: String): Unit = name = n 
 
-  def setPoints(newScore: Int): Unit = points = newScore 
+  def setPoints(newScore: Int): Unit = { 
+    points = newScore 
+    log("setPoints:" + newScore)
+  }
 
   def takeBack(bone: Bone): Unit = { 
-    val playString = bone.left + ":" + bone.right
-    val s = "Rejected: " + playString
-    output(s)
+    bones :+ bone
+    log("takeBack: " + bone.left + ":" + bone.right)
   }
 
   def choosePlay: Play = { 
+    log("choosePlay starting")
     val r = scala.util.Random
     val bone = bones(r.nextInt(bones.size)) 
 
@@ -102,11 +84,18 @@ class DominoPlayer1 extends DominoPlayer {
 
     val p = new Play(bone, end)
     //println(p.bone.left)
+    Thread sleep 1000
     p
   }
 
   //def setPlayChooser(pc: PlayChooser): Unit = playChooser = pc 
 
   def output(s: String) = println(s)
+
+  def log(s: String) = { 
+    if (shouldLog)
+      println(id + ":" + counter + ": " + s)
+    counter += 1
+  }
 
 }
