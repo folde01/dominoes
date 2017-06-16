@@ -9,11 +9,19 @@ class DominoUI2 extends DominoUI {
     println("---")
     displayTable(table)
     displayBoneYard(yard)
+    displayHands(players)
     println("---")
   }
 
   def displayInvalidPlay(x$1: dominoes.players.DominoPlayer): Unit = println("displayInvalidPlay")
   def displayRoundWinner(x$1: dominoes.players.DominoPlayer): Unit = println("displayRoundWinner") 
+  def displayHands(players: Array[DominoPlayer]): Unit = { 
+    players.foreach { (player) =>
+      val hand = player.bonesInHand.map(boneString).mkString(" ")
+      println(player.getName + "'s hand: " + hand)
+    }
+  }
+
   def displayTable(table: Table): Unit = { 
     val (leftString, rightString, layoutString) = 
       if (table.layout.nonEmpty) { 
