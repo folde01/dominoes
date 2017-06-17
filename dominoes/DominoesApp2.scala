@@ -4,15 +4,15 @@ import dominoes._
  
 object DominoesApp2 extends App { 
 
-  println("Welcome to Dominoes")
+  println("\nWelcome to Dominoes\n")
 
   print("Enter name of player 1: ")
   val name1 = scala.io.StdIn.readLine()
   print("Enter name of player 2: ")
   val name2 = scala.io.StdIn.readLine()
-  val player1 = new players.DominoPlayer1
+  val player1 = new players.DominoPlayer2
   player1.setName(name1)
-  val player2 = new players.DominoPlayer1
+  val player2 = new players.DominoPlayer2
   player2.setName(name2)
 
   val ui = new DominoUI2

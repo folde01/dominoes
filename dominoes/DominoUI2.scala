@@ -6,11 +6,11 @@ import dominoes.players._
 class DominoUI2 extends DominoUI { 
 
   def display(players: Array[DominoPlayer],table: Table, yard: BoneYard): Unit = { 
-    println("---")
+    //println("---")
     displayTable(table)
     displayBoneYard(yard)
-    displayHands(players)
-    println("---")
+    //displayHands(players)
+    //println("---")
   }
 
   def displayInvalidPlay(x$1: dominoes.players.DominoPlayer): Unit = println("displayInvalidPlay")
@@ -18,25 +18,30 @@ class DominoUI2 extends DominoUI {
   def displayHands(players: Array[DominoPlayer]): Unit = { 
     players.foreach { (player) =>
       val hand = player.bonesInHand.map(boneString).mkString(" ")
-      println(player.getName + "'s hand: " + hand)
+      println("\n  " + player.getName + "'s hand: " + hand)
     }
   }
 
   def displayTable(table: Table): Unit = { 
-    val (leftString, rightString, layoutString) = 
+    val layoutString = 
       if (table.layout.nonEmpty) { 
-        (table.left.toString, table.right.toString,
-         table.layout.map(boneString).mkString(" ")) 
-      } 
-      else ("", "", "")
+         table.layout.map(boneString).mkString(" ") 
+      } else ""
 
-    println("Left: " + leftString)
-    println("Right: " + rightString)
-    println("Layout: " + layoutString)
+    displayLayout(layoutString)
+  }
+
+  def displayLayout(layout: String): Unit = { 
+    println("\n  * * * *")
+    println("  * * * *")
+    println("  Layout:")
+    println("  " + layout)
+    println("  * * * *")
+    println("  * * * *")
   }
 
   def displayBoneYard(yard: BoneYard): Unit = 
-    println("Boneyard size: " + yard.size) 
+    println("\n  Boneyard size: " + yard.size) 
 
 
   def boneString(bone: Bone): String = 

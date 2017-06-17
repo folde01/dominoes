@@ -7,6 +7,8 @@ class DominoPlayer2 extends DominoPlayer {
   val id = scala.util.Random.nextInt(100000)
 
   var counter = 0  
+  val debug = false
+  //val debug = true
 
   var shouldLog = true
   var name: String = "not set" 
@@ -16,7 +18,7 @@ class DominoPlayer2 extends DominoPlayer {
   //var playChooser: PlayChooser = null
 
   def bonesInHand(): Array[Bone] = { 
-    //log("bonesInHand: " + bones)
+    log("bonesInHand: " + bonesToString(bones))
     bones 
   }
 
@@ -35,40 +37,117 @@ class DominoPlayer2 extends DominoPlayer {
   }
 
   def makePlay(table: Table): Play = {
-    println(getName + "'s turn. Your hand: ")
+    log("makePlay")
+    displayHand
 
-    
-    val bone = new Bone( 
+    val boneOption = requestBone
 
-    print("Enter the side to play it on: ")
-    val endEntered = scala.io.StdIn.readLine()
-    
-    val play = new Play(bone, end)
-    val playString = bone.left + ":" + bone.right + " at " + play.end
-    log(s"makePlay attempting: $playString") 
-    val newbones = bones.filter(_ != bone)
-    bones = newbones
-    table.play(play)
-    //Thread sleep 1000
-    log(s"Accepted: $playString") 
-    play
-  }
-
-  def chooseBone: String = { 
-    print("Enter a bone to play: ")
-    val boneEntered = scala.io.StdIn.readLine()
-    if (validBone(boneEntered)) { 
+    boneOption match { 
+      case None => 
+        throw new CantPlayException("No bone received from requestBone.")
+      case _ => { 
+        val bone = boneOption.get
+        val end = requestEnd
+        val play = new Play(bone, end)
+        val left = bone.left
+        val right = bone.right
+        val playString = left + ":" + right + " at " + play.end
+        println("Playing: " + playString)
+        val newbones = bones.filter(b => (!b.equals(bone)))
+        log("newbones: " + bonesToString(newbones))
+        bones = newbones
+        play
+      }
     }
   }
 
-  def validBone(s: String): Boolean = { 
+  def requestBone: Option[Bone] = { 
+    log("requestBone")
+    // todo: how do we end current game?
+
+    val cantPlay = "cp"
+
+    print(s"\nEnter bone to play (eg '0:1') or '$cantPlay' if you can't play: ")
+    val entered = scala.io.StdIn.readLine().trim
+
+    if (entered == cantPlay) { 
+      if (canPlayFromHand) { 
+        println("You have a bone you can play. Try again.")
+        requestBone
+      } else { 
+        None
+      }
+    } else { 
+      if (isValidBoneString(entered)) { 
+        val boneOption = makeBoneOptionFromString(entered)
+        val bone = boneOption.get
+        println("You entered " + bone.left + ":" + bone.right) 
+        if (handHasBone(bone)) { 
+          boneOption
+        } else { 
+          println("That's not in your hand. Try again.")
+          requestBone
+        }
+      } else { 
+        println("That's not a bone. Try again.")
+        requestBone
+      }
+    }
+  }
+
+  // todo: implement
+  def canPlayFromHand = { 
+    log("canPlayFromHand")
+    true 
+  }
+
+  def requestEnd: Int = { 
+    log("requestEnd")
+    println("Enter the end to play on (0 for left, 1 for right): ")
+    val entered = scala.io.StdIn.readLine().trim
+
+    entered match { 
+      case "0" => Play.LEFT 
+      case "1" => Play.RIGHT 
+      case _ => { 
+        println("Not a valid end. Try again.")
+        requestEnd 
+      }
+    }
+  }
+     
+  def isValidBoneString(s: String): Boolean = { 
+    log("isValidBoneString")
     val rgx = "^\\s*[0-9]+:[0-9]+\\s*$"
-    if (!s.matches(rgx) || bones != null) 
-      false
-    else { 
-      val bone = new Bone(s.split(":")(0).toInt, s.split(":")(1).toInt)
-      bones.contains(bone)
+    s.matches(rgx)
+  }
+
+  def makeBoneOptionFromString(s: String): Option[Bone] = { 
+    log("makeBoneFromString")
+    if (isValidBoneString(s)) 
+      Some(new Bone(s.split(":")(0).toInt, s.split(":")(1).toInt))
+    else
+      None
+  }
+
+  def handHasBone(b: Bone) = bones.exists(_.equals(b))
+
+  def displayHand: Unit = { 
+    log("displayHand")
+    println("\n#####   " + getName + "'s turn" + "   #####")
+    if (numInHand == 0) { 
+      println("\nYour hand is empty.")
     }
+    else { 
+      println("\nYour hand: " + bonesToString(bones))
+    }
+  }
+
+  def boneString(bone: Bone): String =
+    s"${bone.left.toString}:${bone.right.toString}"
+
+  def bonesToString(bones: Seq[Bone]): String = { 
+      bones.map(boneString).mkString(" ")
   }
 
   def newRound(): Unit = { 
@@ -89,38 +168,16 @@ class DominoPlayer2 extends DominoPlayer {
   }
 
   def takeBack(bone: Bone): Unit = { 
-    bones :+ bone
     log("takeBack: " + bone.left + ":" + bone.right)
+    bones :+ bone
   }
-
-  def choosePlay: Play = { 
-    log("choosePlay starting")
-    val r = scala.util.Random
-    val bone = bones(r.nextInt(bones.size)) 
-
-    if (r.nextInt(2) == 1) 
-      bone.flip 
-
-    val end = { 
-      if (r.nextInt(2) == 1) Play.RIGHT
-      else Play.LEFT
-    }
-
-    val p = new Play(bone, end)
-    //println(p.bone.left)
-    //Thread sleep 1000
-    p
-  }
-
-  //def setPlayChooser(pc: PlayChooser): Unit = playChooser = pc 
-
-  def output(s: String) = println(s)
 
   def log(s: String) = { 
-    if (shouldLog)
-      //println(id + ":" + counter + ": " + s + " -- numInHand: " + numInHand())
-      println(id + ":" + counter + ": " + s)
-    counter += 1
+    if (debug) { 
+      if (shouldLog)
+        println(id + ":" + counter + ": " + s)
+      counter += 1
+    }
   }
 
 }
