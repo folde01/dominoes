@@ -2,7 +2,7 @@ package dominoes.players
 
 import dominoes._
 
-class DominoPlayer2 extends DominoPlayer { 
+class DominoPlayer2(cubby: CubbyHole) extends DominoPlayer { 
 
   val id = scala.util.Random.nextInt(100000)
 
@@ -24,6 +24,7 @@ class DominoPlayer2 extends DominoPlayer {
 
   def draw(yard: BoneYard): Unit = { 
     val bone = yard.draw()
+    println("\n  D R A W . . . " + getName + " drew " + boneString(bone))
     if (bone != null) 
       bones = bones :+ bone 
     log("draw: " + bone.left + ":" + bone.right) 
@@ -51,8 +52,9 @@ class DominoPlayer2 extends DominoPlayer {
         val play = new Play(bone, end)
         val left = bone.left
         val right = bone.right
-        val playString = left + ":" + right + " at " + play.end
-        println("Playing: " + playString)
+        val playString = left + ":" + right + " on the " + 
+          { if (end == 0) "left" else "right" }
+        println("\n  <<<<<< " + getName + " playing " + playString + " >>>>>>")
         val newbones = bones.filter(b => (!b.equals(bone)))
         log("newbones: " + bonesToString(newbones))
         bones = newbones
@@ -95,11 +97,6 @@ class DominoPlayer2 extends DominoPlayer {
     }
   }
 
-  // todo: implement
-  def canPlayFromHand = { 
-    log("canPlayFromHand")
-    true 
-  }
 
   def requestEnd: Int = { 
     log("requestEnd")
@@ -150,6 +147,19 @@ class DominoPlayer2 extends DominoPlayer {
       bones.map(boneString).mkString(" ")
   }
 
+  // todo: implement
+  def canPlayFromHand = { 
+    log("canPlayFromHand")
+    val layout = cubby.get.asInstanceOf[Array[Bone]]
+    log("Layout from cubby: " + bonesToString(layout))
+
+    // check each in hand to see if it has left or right
+    val leftEnd = layout.head.left
+    val rightEnd = layout.last.right
+    def hasInt(b: Bone, n: Int) = b.left == n || b.right == n
+    bones.exists(hasInt(_,leftEnd)) || bones.exists(hasInt(_,rightEnd))
+  }
+
   def newRound(): Unit = { 
     log("new round")
     bones = Array[Bone]()
@@ -169,7 +179,9 @@ class DominoPlayer2 extends DominoPlayer {
 
   def takeBack(bone: Bone): Unit = { 
     log("takeBack: " + bone.left + ":" + bone.right)
-    bones :+ bone
+    val newbones = bones :+ bone
+    bones = newbones
+    // todo: put back so hand is in same order as before and not flipped
   }
 
   def log(s: String) = { 

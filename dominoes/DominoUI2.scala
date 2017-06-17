@@ -5,12 +5,17 @@ import dominoes.players._
 
 class DominoUI2 extends DominoUI { 
 
+  var cubby: CubbyHole = null
+
+  def setCubby(c: CubbyHole) = cubby = c
+
   def display(players: Array[DominoPlayer],table: Table, yard: BoneYard): Unit = { 
     //println("---")
     displayTable(table)
     displayBoneYard(yard)
     //displayHands(players)
     //println("---")
+    cubby.put(table.layout) 
   }
 
   def displayInvalidPlay(x$1: dominoes.players.DominoPlayer): Unit = println("displayInvalidPlay")

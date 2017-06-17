@@ -10,12 +10,15 @@ object DominoesApp2 extends App {
   val name1 = scala.io.StdIn.readLine()
   print("Enter name of player 2: ")
   val name2 = scala.io.StdIn.readLine()
-  val player1 = new players.DominoPlayer2
+
+  val cubby = new CubbyHole
+  val player1 = new players.DominoPlayer2(cubby)
   player1.setName(name1)
-  val player2 = new players.DominoPlayer2
+  val player2 = new players.DominoPlayer2(cubby)
   player2.setName(name2)
 
   val ui = new DominoUI2
+  ui.setCubby(cubby)
   val goal = 100
   val pips = 6
   val game = new Dominoes(ui, player1, player2, goal, pips)
