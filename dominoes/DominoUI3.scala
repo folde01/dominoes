@@ -7,8 +7,8 @@ class DominoUI3 extends DominoUI {
 
   var cubby: CubbyHole = null
   val id = "USER__INTERFACE"
-  //val debug = false
-  val debug = true
+  val debug = false
+  //val debug = true
   val shouldLog = true
   var counter = 0
 

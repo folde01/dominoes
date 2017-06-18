@@ -7,8 +7,8 @@ class DominoPlayer3(cubby: CubbyHole, human: Boolean) extends DominoPlayer {
   val id = "PLAYER__" + scala.util.Random.nextInt(100000)
 
   var counter = 0  
-  //val debug = false
-  val debug = true
+  val debug = false
+  //val debug = true
 
   // from CubbyHole
   var cubbyLayout = Array[Bone]()
@@ -50,10 +50,12 @@ class DominoPlayer3(cubby: CubbyHole, human: Boolean) extends DominoPlayer {
 
     def pullLayoutFromCubby = { 
         cubbyLayout = cubby.get.asInstanceOf[Array[Bone]]
+        log("pullCubbyLayout: " + bonesToString(cubbyLayout))
     }
 
-    def pullLayoutFromCubby = { 
-        cubbyLayout = cubby.get.asInstanceOf[Array[Bone]]
+    def pushLayoutToCubby = { 
+        log("pushCubbyLayout: " + bonesToString(cubbyLayout))
+        cubby.put(cubbyLayout)
     }
 
     pullLayoutFromCubby
@@ -63,7 +65,7 @@ class DominoPlayer3(cubby: CubbyHole, human: Boolean) extends DominoPlayer {
 
       boneOption match { 
         case None => 
-          sendCubbyLayout
+          pushLayoutToCubby
           throw new CantPlayException("No bone received from requestBone.")
         case _ => { 
           val bone = boneOption.get
@@ -77,6 +79,7 @@ class DominoPlayer3(cubby: CubbyHole, human: Boolean) extends DominoPlayer {
           val newbones = bones.filter(b => (!b.equals(bone)))
           log("newbones: " + bonesToString(newbones))
           bones = newbones
+          pushLayoutToCubby
           play
         }
       }
@@ -85,7 +88,7 @@ class DominoPlayer3(cubby: CubbyHole, human: Boolean) extends DominoPlayer {
       
       playOption match { 
         case None => 
-          sendCubbyLayout
+          pushLayoutToCubby
           throw new CantPlayException("No play received from choosePlay.")
         case Some(play) => { 
           val left = play.bone.left
@@ -96,19 +99,14 @@ class DominoPlayer3(cubby: CubbyHole, human: Boolean) extends DominoPlayer {
           val newbones = bones.filter(b => (!b.equals(play.bone)))
           log("newbones: " + bonesToString(newbones))
           bones = newbones
+          pushLayoutToCubby
           play
         }
       }
     }
   }
 
-
   def getCubbyLayout = cubbyLayout
-
-  def sendCubbyLayout: Unit = { 
-    log("sendCubbyLayout: " + bonesToString(cubbyLayout))
-    cubby.put(cubbyLayout)
-  }
 
   def canPlayFromHand = { 
     log("canPlayFromHand")
@@ -188,7 +186,7 @@ class DominoPlayer3(cubby: CubbyHole, human: Boolean) extends DominoPlayer {
 
   def requestEnd: Int = { 
     log("requestEnd")
-    println("Enter the end to play on (0 for left, 1 for right): ")
+    print("Enter the end to play on (0 for left, 1 for right): ")
     val entered = scala.io.StdIn.readLine().trim
 
     entered match { 
