@@ -27,7 +27,7 @@ class DominoPlayer4(cubby: CubbyHole, human: Boolean) extends DominoPlayer {
 
   def draw(yard: BoneYard): Unit = { 
     val bone = yard.draw()
-    println("\n  D R A W . . . " + getName + " drew " + boneString(bone))
+    //println("\n  D R A W . . . " + getName + " drew " + boneString(bone))
     if (bone != null) 
       bones = bones :+ bone 
     log("draw: " + bone.left + ":" + bone.right) 
@@ -65,6 +65,7 @@ class DominoPlayer4(cubby: CubbyHole, human: Boolean) extends DominoPlayer {
 
       boneOption match { 
         case None => 
+          println("\n  <<<<<< " + getName + " has no bone to play, so draws if possible >>>>>>")
           pushLayoutToCubby
           throw new CantPlayException("No bone received from requestBone.")
         case _ => { 
@@ -89,6 +90,7 @@ class DominoPlayer4(cubby: CubbyHole, human: Boolean) extends DominoPlayer {
       playOption match { 
         case None => 
           pushLayoutToCubby
+          println("\n  <<<<<< " + getName + " has no bone to play, so draws if possible >>>>>>")
           throw new CantPlayException("No play received from choosePlay.")
         case Some(play) => { 
           val left = play.bone.left

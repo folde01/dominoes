@@ -15,35 +15,58 @@ class DominoUI4 extends DominoUI {
 
   def setCubby(c: CubbyHole) = cubby = c
 
-  def display(players: Array[DominoPlayer],table: Table, yard: BoneYard): Unit = { 
+  def display(players: Array[DominoPlayer], table: Table, yard: BoneYard): Unit = { 
     log("display")
+
+
+    displayTable(table)
+    displayBoneYard(yard)
+    displayScore
+    //cubby.put(table.layout) 
+    sendCubbyLayout
+
+    def displayScore = { 
+      val p1 = players(0)
+      val p2 = players(1)
+      val scoreString = 
+        s"\n\n\n\n\nScore: ${p1.getName} ${p1.getPoints}, ${p2.getName} ${p2.getPoints}" 
+      println(scoreString)
+    }
 
     def sendCubbyLayout: Unit = {
       log("sendCubbyLayout: " + bonesToString(table.layout))
       cubby.put(table.layout)
     }
-
-    displayTable(table)
-    displayBoneYard(yard)
-    //cubby.put(table.layout) 
-    sendCubbyLayout
   }
+
 
   def bonesToString(bones: Seq[Bone]): String = {
       bones.map(boneString).mkString(" ")
   }
   
-  def displayInvalidPlay(x$1: dominoes.players.DominoPlayer): Unit = println("displayInvalidPlay")
+  def displayInvalidPlay(player: DominoPlayer): Unit = { 
+    println
+    println("  !!!!!!")
+    println("  !!!!!!")
+    println("  !!!!!! Invalid play by " + player.getName + ". Try again.")
+    println("  !!!!!!")
+    println("  !!!!!!\n")
+  }
 
   def displayRoundWinner(winner: DominoPlayer): Unit = { 
     log("displayRoundWinner") 
+    
+    val roundResult = 
+      if (winner == null) "Round finished - it was a draw!"
+      else winner.getName + " wins the round!"
+
     println
     println(".")
     println(" .")
     println("  .")
     println("   .")
     println("    .")
-    println("     " + winner.getName + " wins the round!")
+    println("     " + roundResult)
     println("    .")
     println("   .")
     println("  .")

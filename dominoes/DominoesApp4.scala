@@ -6,28 +6,56 @@ object DominoesApp4 extends App {
 
   println("\nWelcome to Dominoes\n")
 
-  print("Enter name of player 1: ")
+  print("Enter name of Player 1: ")
   val name1 = scala.io.StdIn.readLine()
-  print("Enter name of player 2: ")
+  val is1Human = askIfPlayerHuman(1)
+
+  print("Enter name of Player 2: ")
   val name2 = scala.io.StdIn.readLine()
+  val is2Human = askIfPlayerHuman(2)
 
   val cubby = new CubbyHole
 
-  val human = true
-  val computer = false
-
-  val player1 = new players.DominoPlayer4(cubby, computer)
+  val player1 = new players.DominoPlayer4(cubby, is1Human)
   player1.setName(name1)
 
-  val player2 = new players.DominoPlayer4(cubby, computer)
+  val player2 = new players.DominoPlayer4(cubby, is2Human)
   player2.setName(name2)
+
+  val goal = askForGoal
 
   val ui = new DominoUI4
   ui.setCubby(cubby)
-  val goal = 100
   val pips = 6
   val game = new Dominoes(ui, player1, player2, goal, pips)
   val winner = game.play
 
-  println("\n\n" + winner.getName + " WINS!")
+  val winString =
+    s"\n\n\n\n-- GAME OVER -- ${winner.getName} WINS WITH ${winner.getPoints} POINTS! --\n\n\n\n"
+  println(winString)
+
+  def askForGoal: Int = { 
+    print("How many points should it take to win? ")
+    val entered = scala.io.StdIn.readLine().trim
+    val regexIsInt = "^[0-9]+$"
+    val n = 
+      if (entered.matches(regexIsInt)) entered.toInt 
+      else 0
+
+    if (n > 0) n
+    else { 
+      println("Invalid goal. Try again.")
+      askForGoal
+    }
+  }
+
+  def askIfPlayerHuman(playerNum: Int): Boolean = { 
+    print("Is Player " + playerNum + " human? (y/n) ")
+    val entered = scala.io.StdIn.readLine().trim
+    entered match { 
+      case "y" => true 
+      case "n" => false 
+      case _ => askIfPlayerHuman(playerNum)
+    }
+  }
 }
