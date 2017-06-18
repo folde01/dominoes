@@ -11,7 +11,7 @@ class DominoUI4 extends DominoUI {
   //val debug = true
   val shouldLog = true
   var counter = 0
-  var round = 2
+  var round = 1
 
   def setCubby(c: CubbyHole) = cubby = c
 
@@ -21,15 +21,15 @@ class DominoUI4 extends DominoUI {
 
     displayTable(table)
     displayBoneYard(yard)
-    displayScore
+    displayStatus
     //cubby.put(table.layout) 
     sendCubbyLayout
 
-    def displayScore = { 
+    def displayStatus = { 
       val p1 = players(0)
       val p2 = players(1)
       val scoreString = 
-        s"\n\n\n\n\nScore: ${p1.getName} ${p1.getPoints}, ${p2.getName} ${p2.getPoints}" 
+        s"\n\n\n\n\nDOMINOES -- ROUND $round -- SCORE ${p1.getName} ${p1.getPoints}, ${p2.getName} ${p2.getPoints}" 
       println(scoreString)
     }
 
@@ -72,6 +72,8 @@ class DominoUI4 extends DominoUI {
     println("  .")
     println(" .")
     println(".")
+
+    round += 1
   }
 
   def displayHands(players: Array[DominoPlayer]): Unit = { 
