@@ -16,7 +16,7 @@ class DominoPlayer1 extends DominoPlayer {
   //var playChooser: PlayChooser = null
 
   def bonesInHand(): Array[Bone] = { 
-    log("bonesInHand: " + bones)
+    //log("bonesInHand: " + bones)
     bones 
   }
 
@@ -42,7 +42,7 @@ class DominoPlayer1 extends DominoPlayer {
     val newbones = bones.filter(_ != bone)
     bones = newbones
     table.play(play)
-    Thread sleep 1000
+    //Thread sleep 1000
     log(s"Accepted: $playString") 
     play
   }
@@ -60,8 +60,8 @@ class DominoPlayer1 extends DominoPlayer {
   def setName(n: String): Unit = name = n 
 
   def setPoints(newScore: Int): Unit = { 
-    points = newScore 
     log("setPoints:" + newScore)
+    points = newScore 
   }
 
   def takeBack(bone: Bone): Unit = { 
@@ -84,7 +84,7 @@ class DominoPlayer1 extends DominoPlayer {
 
     val p = new Play(bone, end)
     //println(p.bone.left)
-    Thread sleep 1000
+    //Thread sleep 1000
     p
   }
 
@@ -94,6 +94,7 @@ class DominoPlayer1 extends DominoPlayer {
 
   def log(s: String) = { 
     if (shouldLog)
+      //println(id + ":" + counter + ": " + s + " -- numInHand: " + numInHand())
       println(id + ":" + counter + ": " + s)
     counter += 1
   }
