@@ -4,11 +4,11 @@ import dominoes._
 
 class DominoPlayer3(cubby: CubbyHole, human: Boolean) extends DominoPlayer { 
 
-  val id = scala.util.Random.nextInt(100000)
+  val id = "PLAYER__" + scala.util.Random.nextInt(100000)
 
   var counter = 0  
-  val debug = false
-  //val debug = true
+  //val debug = false
+  val debug = true
 
   // from CubbyHole
   var cubbyLayout = Array[Bone]()
@@ -40,16 +40,30 @@ class DominoPlayer3(cubby: CubbyHole, human: Boolean) extends DominoPlayer {
     points
   }
 
+  var newTurn = true
+
+
   def makePlay(table: Table): Play = {
     log("makePlay")
+
     displayHand
+
+    def pullLayoutFromCubby = { 
+        cubbyLayout = cubby.get.asInstanceOf[Array[Bone]]
+    }
+
+    def pullLayoutFromCubby = { 
+        cubbyLayout = cubby.get.asInstanceOf[Array[Bone]]
+    }
+
+    pullLayoutFromCubby
 
     if (human) { 
       val boneOption = requestBone
 
       boneOption match { 
         case None => 
-          setCubbyLayout
+          sendCubbyLayout
           throw new CantPlayException("No bone received from requestBone.")
         case _ => { 
           val bone = boneOption.get
@@ -71,7 +85,7 @@ class DominoPlayer3(cubby: CubbyHole, human: Boolean) extends DominoPlayer {
       
       playOption match { 
         case None => 
-          setCubbyLayout
+          sendCubbyLayout
           throw new CantPlayException("No play received from choosePlay.")
         case Some(play) => { 
           val left = play.bone.left
@@ -88,14 +102,19 @@ class DominoPlayer3(cubby: CubbyHole, human: Boolean) extends DominoPlayer {
     }
   }
 
-  def getCubbyLayout = cubbyLayout = cubby.get.asInstanceOf[Array[Bone]]
 
-  def setCubbyLayout = cubby.put(cubbyLayout)
+  def getCubbyLayout = cubbyLayout
+
+  def sendCubbyLayout: Unit = { 
+    log("sendCubbyLayout: " + bonesToString(cubbyLayout))
+    cubby.put(cubbyLayout)
+  }
 
   def canPlayFromHand = { 
     log("canPlayFromHand")
     //val layout = cubby.get.asInstanceOf[Array[Bone]]
-    val layout = cubbyLayout
+    //val layout = cubbyLayout
+    val layout = getCubbyLayout
     log("Layout from cubby: " + bonesToString(layout))
 
     // check each in hand to see if it has left or right
@@ -107,7 +126,8 @@ class DominoPlayer3(cubby: CubbyHole, human: Boolean) extends DominoPlayer {
 
   def choosePlay: Option[Play] = { 
     log("choosePlay")
-    val layout = cubby.get.asInstanceOf[Array[Bone]]
+    //val layout = cubby.get.asInstanceOf[Array[Bone]]
+    val layout = getCubbyLayout
     log("Layout from cubby: " + bonesToString(layout))
 
     // check each in hand to see if it has left or right
