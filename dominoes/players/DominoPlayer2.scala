@@ -7,8 +7,8 @@ class DominoPlayer2(cubby: CubbyHole) extends DominoPlayer {
   val id = scala.util.Random.nextInt(100000)
 
   var counter = 0  
-  val debug = false
-  //val debug = true
+  //val debug = false
+  val debug = true
 
   var shouldLog = true
   var name: String = "not set" 

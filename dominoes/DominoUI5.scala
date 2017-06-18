@@ -3,7 +3,7 @@ package dominoes
 import dominoes._
 import dominoes.players._
 
-class DominoUI3 extends DominoUI { 
+class DominoUI5 extends DominoUI { 
 
   var cubby: CubbyHole = null
   val id = "USER__INTERFACE"
@@ -11,44 +11,69 @@ class DominoUI3 extends DominoUI {
   //val debug = true
   val shouldLog = true
   var counter = 0
-  var round = 2
+  var round = 1
 
   def setCubby(c: CubbyHole) = cubby = c
 
-  def display(players: Array[DominoPlayer],table: Table, yard: BoneYard): Unit = { 
+  def display(players: Array[DominoPlayer], table: Table, yard: BoneYard): Unit = { 
     log("display")
+
+
+    displayTable(table)
+    displayBoneYard(yard)
+    displayStatus
+    //cubby.put(table.layout) 
+    sendCubbyLayout
+
+    def displayStatus = { 
+      val p1 = players(0)
+      val p2 = players(1)
+      val scoreString = 
+        s"\n\n\n\n\nDOMINOES -- ROUND $round -- SCORE ${p1.getName} ${p1.getPoints}, ${p2.getName} ${p2.getPoints}" 
+      println(scoreString)
+    }
 
     def sendCubbyLayout: Unit = {
       log("sendCubbyLayout: " + bonesToString(table.layout))
       cubby.put(table.layout)
     }
-
-    displayTable(table)
-    displayBoneYard(yard)
-    //cubby.put(table.layout) 
-    sendCubbyLayout
   }
+
 
   def bonesToString(bones: Seq[Bone]): String = {
       bones.map(boneString).mkString(" ")
   }
   
-  def displayInvalidPlay(x$1: dominoes.players.DominoPlayer): Unit = println("displayInvalidPlay")
+  def displayInvalidPlay(player: DominoPlayer): Unit = { 
+    println
+    println("  !!!!!!")
+    println("  !!!!!!")
+    println("  !!!!!! Invalid play by " + player.getName + ". Try again.")
+    println("  !!!!!!")
+    println("  !!!!!!\n")
+  }
 
   def displayRoundWinner(winner: DominoPlayer): Unit = { 
     log("displayRoundWinner") 
+    
+    val roundResult = 
+      if (winner == null) "Round finished - it was a draw!"
+      else winner.getName + " wins the round!"
+
     println
     println(".")
     println(" .")
     println("  .")
     println("   .")
     println("    .")
-    println("     " + winner.getName + " wins the round!")
+    println("     " + roundResult)
     println("    .")
     println("   .")
     println("  .")
     println(" .")
     println(".")
+
+    round += 1
   }
 
   def displayHands(players: Array[DominoPlayer]): Unit = { 

@@ -27,5 +27,6 @@ object DominoesApp3 extends App {
   val pips = 6
   val game = new Dominoes(ui, player1, player2, goal, pips)
   val winner = game.play
-  println("winner: " + winner.getName)
+
+  println("\n\n" + winner.getName + " WINS!")
 }
