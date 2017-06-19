@@ -46,6 +46,8 @@ class DominoPlayer5(cubby: CubbyHole, human: Boolean) extends DominoPlayer {
   def makePlay(table: Table): Play = {
     log("makePlay")
 
+    //throw new NewGameException
+
     displayHand
 
     def pullLayoutFromCubby = { 
