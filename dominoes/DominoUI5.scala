@@ -29,7 +29,7 @@ class DominoUI5 extends DominoUI {
       val p1 = players(0)
       val p2 = players(1)
       val scoreString = 
-        s"\n\n\n\n\nDOMINOES -- ROUND $round -- SCORE ${p1.getName} ${p1.getPoints}, ${p2.getName} ${p2.getPoints}" 
+        s"\nSCORE ${p1.getName} ${p1.getPoints}, ${p2.getName} ${p2.getPoints} -- ROUND $round"
       println(scoreString)
     }
 

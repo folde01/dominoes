@@ -1,22 +1,11 @@
 package dominoes
 
 import dominoes._
+import dominoes.DominoesUtil5._
+
 import util.control.Breaks._
 
 object DominoesApp5 extends App { 
-
-  def askUser(question: String): String = { 
-    val otherOptions = "\n[or '..' for new game, or 'qq' to quit] "
-    val prompt = s"$question $otherOptions"
-    print(prompt)
-    val entered = scala.io.StdIn.readLine().trim
-  
-    entered match { 
-      case ".." => throw new NewGameException 
-      case "qq" => throw new QuitException 
-      case s => s 
-    }
-  }
 
   def askForGoal: Int = { 
     val entered = askUser("How many points should it take to win?")
@@ -45,7 +34,13 @@ object DominoesApp5 extends App {
     askUser(s"Enter name of Player $playerNum:")
 
   def runGame { 
-    println("\nWelcome to Dominoes\n")
+
+    println("\n\nWelcome to Dominoes")
+    println("\nInstructions:")
+    println("\nAt any prompt that follows, you can always type '..' to start a new game,")
+    println("'qq' to quit, or 'h' for help remembering these instructions.")
+
+    println("\nLet's get started!")
 
     val name1 = askForPlayerName(1)
     val name2 = askForPlayerName(2)
@@ -69,7 +64,7 @@ object DominoesApp5 extends App {
     val winner = game.play
 
     val winString =
-      s"\n\n\n\n-- GAME OVER -- ${winner.getName} WINS WITH ${winner.getPoints} POINTS! --\n\n\n\n"
+      s"\n\n-- GAME OVER -- ${winner.getName} WINS WITH ${winner.getPoints} POINTS! --\n\n"
     println(winString)
 
   }
@@ -82,11 +77,11 @@ object DominoesApp5 extends App {
         runGame
       } catch { 
         case _: NewGameException => { 
-          println("\n\n\n\n. . . N E W   G A M E . . .\n\n\n\n")
+          println("\n\n. . . N E W   G A M E . . .")
           break  
         }
         case _: QuitException => { 
-          println("\n\n\n\nGOODBYE!\n\n\n\n")
+          println("\n\nGOODBYE!\n\n")
           System.exit(0) 
         }
         case _: Throwable => System.exit(0) 

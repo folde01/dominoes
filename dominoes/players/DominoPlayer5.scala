@@ -1,6 +1,7 @@
 package dominoes.players
 
 import dominoes._
+import dominoes.DominoesUtil5._
 
 class DominoPlayer5(cubby: CubbyHole, human: Boolean) extends DominoPlayer { 
 
@@ -67,7 +68,7 @@ class DominoPlayer5(cubby: CubbyHole, human: Boolean) extends DominoPlayer {
 
       boneOption match { 
         case None => 
-          println("\n  <<<<<< " + getName + " has no bone to play, so draws if possible >>>>>>")
+          println("\n  <<<<<< " + getName + " has no bone to play >>>>>>")
           pushLayoutToCubby
           throw new CantPlayException("No bone received from requestBone.")
         case _ => { 
@@ -92,7 +93,7 @@ class DominoPlayer5(cubby: CubbyHole, human: Boolean) extends DominoPlayer {
       playOption match { 
         case None => 
           pushLayoutToCubby
-          println("\n  <<<<<< " + getName + " has no bone to play, so draws if possible >>>>>>")
+          println("\n  <<<<<< " + getName + " has no bone to play >>>>>>")
           throw new CantPlayException("No play received from choosePlay.")
         case Some(play) => { 
           val left = play.bone.left
@@ -159,12 +160,15 @@ class DominoPlayer5(cubby: CubbyHole, human: Boolean) extends DominoPlayer {
 
     val cantPlay = "cp"
 
-    print(s"\nEnter bone to play (eg '0:1') or '$cantPlay' if you can't play: ")
-    val entered = scala.io.StdIn.readLine().trim
+    //print(s"\nEnter bone to play (eg '0:1') or '$cantPlay' if you can't play: ")
+    //val entered = scala.io.StdIn.readLine().trim
 
+    val prompt = s"Enter bone to play (eg '0:1') or '$cantPlay' if you can't play:"
+    val entered = askUser(prompt)
+    
     if (entered == cantPlay) { 
       if (canPlayFromHand) { 
-        println("You have a bone you can play. Try again.")
+        println("\nYou have a bone you can play. Try again.")
         requestBone
       } else { 
         None
@@ -190,8 +194,10 @@ class DominoPlayer5(cubby: CubbyHole, human: Boolean) extends DominoPlayer {
 
   def requestEnd: Int = { 
     log("requestEnd")
-    print("Enter the end to play on (0 for left, 1 for right): ")
-    val entered = scala.io.StdIn.readLine().trim
+    //print("Enter the end to play on (0 for left, 1 for right): ")
+    //val entered = scala.io.StdIn.readLine().trim
+    val prompt = "Enter the end to play on (0 for left, 1 for right):"
+    val entered = askUser(prompt) 
 
     entered match { 
       case "0" => Play.LEFT 
