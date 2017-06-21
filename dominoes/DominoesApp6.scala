@@ -1,13 +1,12 @@
 package dominoes
 
 import dominoes._
-import dominoes.DominoesUtil5._
-
+import dominoes.DominoesUtil6._
 import util.control.Breaks._
 
-object DominoesApp5 extends App { 
+object DominoesApp6 extends App { 
 
-  def askForGoal: Int = { 
+  private def askForGoal: Int = { 
     val entered = askUser("How many points should it take to win?")
     val regexIsInt = "^[0-9]+$"
     val n = 
@@ -21,7 +20,7 @@ object DominoesApp5 extends App {
     }
   }
 
-  def askIfPlayerHuman(playerNum: Int): Boolean = { 
+  private def askIfPlayerHuman(playerNum: Int): Boolean = { 
     val entered = askUser("Is Player " + playerNum + " human? (y/n)")
     entered match { 
       case "y" => true 
@@ -30,10 +29,10 @@ object DominoesApp5 extends App {
     }
   }
 
-  def askForPlayerName(playerNum: Int): String = 
+  private def askForPlayerName(playerNum: Int): String = 
     askUser(s"Enter name of Player $playerNum:")
 
-  def runGame { 
+  private def runGame { 
 
     println("\n\nWelcome to Dominoes")
     println("\nInstructions: At any prompt that follows, you can always type '..' to start") 
@@ -49,13 +48,13 @@ object DominoesApp5 extends App {
 
     val cubby = new CubbyHole
 
-    val player1 = new players.DominoPlayer5(cubby, is1Human)
+    val player1 = new players.DominoPlayer6(cubby, is1Human)
     player1.setName(name1)
 
-    val player2 = new players.DominoPlayer5(cubby, is2Human)
+    val player2 = new players.DominoPlayer6(cubby, is2Human)
     player2.setName(name2)
 
-    val ui = new DominoUI5
+    val ui = new DominoUI6
     ui.setCubby(cubby)
     val pips = 6
     val game = new Dominoes(ui, player1, player2, goal, pips)
