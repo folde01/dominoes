@@ -1,7 +1,20 @@
-To run the code:
+# Instructions:
 
-$ scalac -cp . dominoes/DominoesUtil6.scala dominoes/QuitException.scala dominoes/Neoes/players/DominoPlayer6.scala dominoes/DominoUI6.scala dominoes/DominoesApp6.scala && scala -cp . dominoes.DominoesApp6
+# Here's how to get the dependencies, compile and run the code and the tests:
+# Note: There are a bunch of early versions in https://github.com/folde01/dominoes. The final one is 'v6' (ie the files end in '6', as you'll see below). You can ignore the others.
 
-To run the tests:
+# Get the software and dependencies
 
-$ scalac -cp .:scalacheck_2.12-1.13.4.jar dominoes/players/DominoPlayerTest6.scala && scala -cp .:scalacheck_2.12-1.13.4.jar dominoes.DominoPlayerTest6
+git clone https://github.com/folde01/dominoes
+cd dominoes/
+wget https://raw.githubusercontent.com/keithmannock/SDP-2017/master/coursework/dominoes/dominoes.zip
+unzip dominoes.zip 
+wget https://www.scalacheck.org/files/scalacheck_2.12-1.13.4.jar
+
+# Compile and run the game 
+
+scalac -cp . dominoes/DominoesUtil6.scala dominoes/QuitException.scala dominoes/NewGameException.scala dominoes/players/DominoPlayer6.scala dominoes/DominoUI6.scala dominoes/DominoesApp6.scala && scala -cp . dominoes.DominoesApp6
+
+# Compile and run the tests 
+
+scalac -cp .:scalacheck_2.12-1.13.4.jar dominoes/players/DominoPlayerTest6.scala && scala -cp .:scalacheck_2.12-1.13.4.jar dominoes.DominoPlayerTest6
