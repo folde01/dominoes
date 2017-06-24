@@ -1,0 +1,7 @@
+To run the code:
+
+$ scalac -cp . dominoes/DominoesUtil6.scala dominoes/QuitException.scala dominoes/Neoes/players/DominoPlayer6.scala dominoes/DominoUI6.scala dominoes/DominoesApp6.scala && scala -cp . dominoes.DominoesApp6
+
+To run the tests:
+
+$ scalac -cp .:scalacheck_2.12-1.13.4.jar dominoes/players/DominoPlayerTest6.scala && scala -cp .:scalacheck_2.12-1.13.4.jar dominoes.DominoPlayerTest6

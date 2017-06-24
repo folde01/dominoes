@@ -10,7 +10,6 @@ object DominoPlayerSpecification extends Properties("DominoPlayer") {
   val maxDraws = 28 
   val validNumDraws = Gen.choose(0,maxDraws)
 
-
   property("getPoints == setPoints") = forAll { (newScore: Int) => 
     val p: Player = new Player 
     p.setPoints(newScore)

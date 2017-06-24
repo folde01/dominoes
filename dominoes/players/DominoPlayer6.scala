@@ -3,7 +3,7 @@ package dominoes.players
 import dominoes._
 import dominoes.DominoesUtil6._
 
-class DominoPlayer6(cubby: CubbyHole, human: Boolean) extends DominoPlayer { 
+case class DominoPlayer6(cubby: CubbyHole, human: Boolean) extends DominoPlayer { 
 
   private var cubbyLayout = Array[Bone]()
   private var name: String = "" 
@@ -39,6 +39,7 @@ class DominoPlayer6(cubby: CubbyHole, human: Boolean) extends DominoPlayer {
     bones = newbones
     // todo: put back so hand is in same order as before and not flipped
   }
+
   def bonesInHand(): Array[Bone] = { 
     log("bonesInHand: " + bonesToString(bones))
     bones 
@@ -102,6 +103,7 @@ class DominoPlayer6(cubby: CubbyHole, human: Boolean) extends DominoPlayer {
           val right = play.bone.right
           val playString = left + ":" + right + " on the " + 
             { if (play.end == 0) "left" else "right" }
+          announceMove(s"$getName playing $playString")
           val newbones = bones.filter(b => (!b.equals(play.bone)))
           log("newbones: " + bonesToString(newbones))
           bones = newbones
