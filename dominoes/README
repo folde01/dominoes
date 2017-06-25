@@ -1,4 +1,5 @@
-# Here is how to download, compile and run this text-based one- or two-player dominoes game and the ScalaCheck tests to go with it, and read documentation/comments. 
+# Here is how to download, compile and run this text-based one- or two-player dominoes game and the ScalaCheck tests to go with it, and read documentation/comments:
+
 
 # 1) Get the software and dependencies (assumes Scala 2.12.1 is already installed on Linux/Mac).
 
@@ -10,13 +11,16 @@ wget https://www.scalacheck.org/files/scalacheck_2.12-1.13.4.jar
 
 # Note: There are a bunch of early versions in https://github.com/folde01/dominoes. The only useful one is 'v6' (ie the .scala files ending in '6', as you'll see below). Ignore the others unless you want to see the the intermediate development stages (without analysing git commits).
 
-# 2) Compile and run the game. Playing should be self-explanatory. Please note that the computer-based player does no more than choose a valid bone to play.
+
+# 2) Compile and run the game. Playing should be self-explanatory, but note that you can type 'h' at a prompt for help (which in turn tells you how to start a new game or quit). Also please note that the computer-based player at this stage does no more than choose a valid bone to play.
 
 scalac -cp . dominoes/Logger.scala dominoes/ConsoleLogger.scala dominoes/DominoesUtil6.scala dominoes/QuitException.scala dominoes/NewGameException.scala dominoes/players/DominoPlayer6.scala dominoes/DominoUI6.scala dominoes/DominoesApp6.scala && scala -cp . dominoes.DominoesApp6
+
 
 # 3) Compile and run the tests.
 
 scalac -cp .:scalacheck_2.12-1.13.4.jar dominoes/players/DominoPlayerTest6.scala && scala -cp .:scalacheck_2.12-1.13.4.jar dominoes.DominoPlayerTest6
+
 
 # 4) For documentation/comments for public methods (please see code for private methods).
 
