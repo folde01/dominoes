@@ -1,3 +1,5 @@
+package dominoes
+
 trait Logger { 
-  def log
+  def log(s: String)
 }

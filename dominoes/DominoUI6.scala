@@ -4,18 +4,28 @@ import dominoes._
 import dominoes.players._
 import dominoes.DominoesUtil6._
 
+
+/** A text-based user interface for the dominoes game. It has methods for updating the display at appropriate times.
+  */
 class DominoUI6 extends DominoUI { 
 
-  var round = 1
+
+  /** Keeps track of current round
+    */
+  private var round = 1
+
+    
+  /** Shared CubbyHole
+    */
   private var cubby: CubbyHole = null
 
-  // for logging/debugging
-  private val id = "USER__INTERFACE"
-  private val debug = false
-  //private val debug = true
-  private val shouldLog = true
-  private var counter = 0
 
+  /** This method displays the current state of the players, the table, 
+    * and the boneyard as appropriate for the UI.
+    * @param players Both players
+    * @param table The table containing the bone layout 
+    * @param yard The yard of unused bones
+    */
   def display(players: Array[DominoPlayer], table: Table, yard: BoneYard): Unit = { 
     log("display")
     displayTable(table)
@@ -37,6 +47,10 @@ class DominoUI6 extends DominoUI {
     }
   }
 
+  
+  /** This method displays that the specified player made an illegal play
+    * @param player The player making the illegal play
+    */
   def displayInvalidPlay(player: DominoPlayer): Unit = { 
     println
     println("  !!!!!!")
@@ -46,6 +60,10 @@ class DominoUI6 extends DominoUI {
     println("  !!!!!!\n")
   }
 
+
+  /** This method displays the winner for the round
+    * @param player The winning player for the round. null if there was a draw.
+    */
   def displayRoundWinner(winner: DominoPlayer): Unit = { 
     log("displayRoundWinner") 
     
@@ -69,15 +87,16 @@ class DominoUI6 extends DominoUI {
     round += 1
   }
 
+
+  /** Set local reference to shared CubbyHole
+    * @param c new reference 
+    */
   def setCubby(c: CubbyHole) = cubby = c
 
-  private def displayHands(players: Array[DominoPlayer]): Unit = { 
-    players.foreach { (player) =>
-      val hand = player.bonesInHand.map(boneString).mkString(" ")
-      println("\n  " + player.getName + "'s hand: " + hand)
-    }
-  }
 
+  /** Display table layout
+    * @param table The game's table
+    */
   private def displayTable(table: Table): Unit = { 
     val layoutString = 
       if (table.layout.nonEmpty) { 
@@ -85,28 +104,42 @@ class DominoUI6 extends DominoUI {
       } else ""
 
     displayLayout(layoutString)
+
+    def displayLayout(layout: String): Unit = { 
+      println("\n  * * * *")
+      println("  * * * *")
+      println("  Layout:")
+      println("  " + layout)
+      println("  * * * *")
+      println("  * * * *")
+    }
   }
 
-  private def displayLayout(layout: String): Unit = { 
-    println("\n  * * * *")
-    println("  * * * *")
-    println("  Layout:")
-    println("  " + layout)
-    println("  * * * *")
-    println("  * * * *")
-  }
 
+  /** Display yard of unused bones
+    * @param yard current boneyard
+    */
   private def displayBoneYard(yard: BoneYard): Unit = 
     println("\n  Boneyard size: " + yard.size) 
 
-  private def log(s: String) = {
-    if (debug) {
-      if (shouldLog)
-        println(id + ":" + counter + ": " + s)
-      counter += 1
-    }
-  }
-  
+
+  /** Reference to a logger object (for debugging purposes)
+    */
+  var logger: Logger = null
+
+
+  /** Set logger object so we can use its log method
+    * @param logger The logger
+    */
+  def setLogger(logger: Logger): Unit = this.logger = logger 
+
+
+  /** Log debug messages 
+    * @param s message to log
+    */
+  private def log(s: String): Unit = 
+    if (logger == null) {}
+    else logger.log(s)
 
 }
 

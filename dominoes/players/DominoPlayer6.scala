@@ -229,6 +229,11 @@ case class DominoPlayer6(private val cubby: CubbyHole, private val human: Boolea
   }
 
 
+  /** Ask user which bone to play and give "can't play" option, but check if it
+    * it's properly being used. Validate whether bone chosen is a valid bone, a bone in 
+    * the player's hand, and that it can be played. Ask again as needed. 
+    * @return bone chosen (if there's one which can be played)
+    */
   private def requestBone: Option[Bone] = { 
     log("requestBone")
     val cantPlay = "cp"
@@ -260,6 +265,9 @@ case class DominoPlayer6(private val cubby: CubbyHole, private val human: Boolea
   }
 
 
+  /** Ask user for end to play chosen bone on. Validate and ask again as needed.
+    * @return left or right end of the layout
+    */ 
   private def requestEnd: Int = { 
     log("requestEnd")
     val prompt = "Enter the end to play on (0 for left, 1 for right):"
@@ -275,12 +283,24 @@ case class DominoPlayer6(private val cubby: CubbyHole, private val human: Boolea
     }
   }
      
+  
+  /** Check whether a string (probably entered by a user) is a valid representation
+    * of a bone, ie in the format '3:4' for a bone with a 3 and a 4.
+    * @param string to check
+    * @return whether string is a valid bone string
+    */
   private def isValidBoneString(s: String): Boolean = { 
     log("isValidBoneString")
     val rgx = "^\\s*[0-9]+:[0-9]+\\s*$"
     s.matches(rgx)
   }
 
+
+  /** Check that input is a valid bone representation and if so return
+    * corresponding bone 
+    * @param string to check and convert
+    * @return Some(bone) or None
+    */
   private def makeBoneOptionFromString(s: String): Option[Bone] = { 
     log("makeBoneFromString")
     if (isValidBoneString(s)) 
@@ -289,28 +309,32 @@ case class DominoPlayer6(private val cubby: CubbyHole, private val human: Boolea
       None
   }
 
-  private def handHasBone(b: Bone) = bones.exists(_.equals(b))
 
-  private var logCounter = 0  
-  private val logId = "PLAYER__" + scala.util.Random.nextInt(100000)
+  /** Check if player has a given bone
+    * @param bone to check for
+    * @return whether player has the bone
+    */
+  private def handHasBone(b: Bone): Boolean = bones.exists(_.equals(b))
 
-  private def log(s: String) = { 
-    if (debug) { 
-      println(logId + ":" + logCounter + ": " + s)
-      logCounter += 1
-    }
-  }
 
-  private def pullLayoutFromCubby = { 
+  /** Retrieve table layout from shared CubbyHole.
+    */
+  private def pullLayoutFromCubby: Unit = { 
       cubbyLayout = cubby.get.asInstanceOf[Array[Bone]]
       log("pullCubbyLayout: " + bonesToString(cubbyLayout))
   }
 
-  private def pushLayoutToCubby = { 
+
+  /** Store table layout in shared CubbyHole.
+    */
+  private def pushLayoutToCubby: Unit = { 
       log("pushCubbyLayout: " + bonesToString(cubbyLayout))
       cubby.put(cubbyLayout)
   }
 
+
+  /** Display player's hand.
+    */
   private def displayHand: Unit = { 
     log("displayHand")
     println("\n#####   " + getName + "'s turn" + "   #####")
@@ -321,4 +345,24 @@ case class DominoPlayer6(private val cubby: CubbyHole, private val human: Boolea
       println("\nYour hand: " + bonesToString(bones))
     }
   }
+
+
+  /** Reference to a logger object (for debugging purposes)
+    */
+  var logger: Logger = null
+
+
+  /** Set logger object so we can use its log method
+    * @param logger The logger
+    */
+  def setLogger(logger: Logger): Unit = this.logger = logger
+
+
+  /** Log debug messages
+    * @param s message to log
+    */
+  private def log(s: String): Unit =
+    if (logger == null) {}
+    else logger.log(s)
+
 }

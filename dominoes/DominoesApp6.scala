@@ -52,11 +52,14 @@ object DominoesApp6 extends App {
 
     val player1 = new players.DominoPlayer6(cubby, is1Human, debug)
     player1.setName(name1)
+    //player1.setLogger(new ConsoleLogger("___PLAYER_1"))
 
     val player2 = new players.DominoPlayer6(cubby, is2Human, debug)
     player2.setName(name2)
+    //player2.setLogger(new ConsoleLogger("___PLAYER_2"))
 
     val ui = new DominoUI6
+    //ui.setLogger(new ConsoleLogger("___UI"))
     ui.setCubby(cubby)
     val pips = 6
     val game = new Dominoes(ui, player1, player2, goal, pips)
