@@ -6,6 +6,8 @@ import util.control.Breaks._
 
 object DominoesApp6 extends App { 
 
+  private val debug = false
+
   private def askForGoal: Int = { 
     val entered = askUser("How many points should it take to win?")
     val regexIsInt = "^[0-9]+$"
@@ -48,10 +50,10 @@ object DominoesApp6 extends App {
 
     val cubby = new CubbyHole
 
-    val player1 = new players.DominoPlayer6(cubby, is1Human)
+    val player1 = new players.DominoPlayer6(cubby, is1Human, debug)
     player1.setName(name1)
 
-    val player2 = new players.DominoPlayer6(cubby, is2Human)
+    val player2 = new players.DominoPlayer6(cubby, is2Human, debug)
     player2.setName(name2)
 
     val ui = new DominoUI6
