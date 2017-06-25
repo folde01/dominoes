@@ -14,7 +14,7 @@ wget https://www.scalacheck.org/files/scalacheck_2.12-1.13.4.jar
 
 # 2) Compile and run the game. Playing should be self-explanatory, but note that you can type 'h' at a prompt for help (which in turn tells you how to start a new game or quit). Also please note that the computer-based player at this stage does no more than choose a valid bone to play.
 
-scalac -cp . dominoes/Logger.scala dominoes/ConsoleLogger.scala dominoes/DominoesUtil6.scala dominoes/QuitException.scala dominoes/NewGameException.scala dominoes/players/DominoPlayer6.scala dominoes/DominoUI6.scala dominoes/DominoesApp6.scala && scala -cp . dominoes.DominoesApp6
+scalac -cp . dominoes/Logger.scala dominoes/ConsoleLogger.scala dominoes/DominoesPrintUtil6.scala dominoes/QuitException.scala dominoes/NewGameException.scala dominoes/players/DominoPlayer6.scala dominoes/DominoUI6.scala dominoes/DominoesApp6.scala && scala -cp . dominoes.DominoesApp6
 
 
 # 3) Compile and run the tests.

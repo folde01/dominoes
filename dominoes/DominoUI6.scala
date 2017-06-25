@@ -2,7 +2,7 @@ package dominoes
 
 import dominoes._
 import dominoes.players._
-import dominoes.DominoesUtil6._
+import dominoes.DominoesPrintUtil6._
 
 
 /** A text-based user interface for the dominoes game. It has methods for updating the display at appropriate times.
@@ -37,8 +37,8 @@ class DominoUI6 extends DominoUI {
       val p1 = players(0)
       val p2 = players(1)
       val scoreString = 
-        s"\nSCORE ${p1.getName} ${p1.getPoints}, ${p2.getName} ${p2.getPoints} -- ROUND $round"
-      println(scoreString)
+        s"SCORE: ${p1.getName} ${p1.getPoints}, ${p2.getName} ${p2.getPoints} -- ROUND $round"
+      printInfo(scoreString)
     }
 
     def sendCubbyLayout: Unit = {
@@ -52,12 +52,7 @@ class DominoUI6 extends DominoUI {
     * @param player The player making the illegal play
     */
   def displayInvalidPlay(player: DominoPlayer): Unit = { 
-    println
-    println("  !!!!!!")
-    println("  !!!!!!")
-    println("  !!!!!! Invalid play by " + player.getName + ". Try again.")
-    println("  !!!!!!")
-    println("  !!!!!!\n")
+    printError("Invalid play by " + player.getName + ". Try again.")
   }
 
 
@@ -120,7 +115,7 @@ class DominoUI6 extends DominoUI {
     * @param yard current boneyard
     */
   private def displayBoneYard(yard: BoneYard): Unit = 
-    println("\n  Boneyard size: " + yard.size) 
+    printInfo("Boneyard size: " + yard.size) 
 
 
   /** Reference to a logger object (for debugging purposes)

@@ -1,7 +1,7 @@
 package dominoes.players
 
 import dominoes._
-import dominoes.DominoesUtil6._
+import dominoes.DominoesPrintUtil6._
 
 /** A class to represent a dominoes player.
   * @constructor Create a new player 
@@ -161,7 +161,7 @@ case class DominoPlayer6(private val cubby: CubbyHole, private val human: Boolea
       }
     }
   }
-
+ 
 
   /** Announce the player's move 
     * @param play The play to announce (if one could be made).
@@ -177,7 +177,7 @@ case class DominoPlayer6(private val cubby: CubbyHole, private val human: Boolea
       }
       case None => s"$getName has no bone to play"
     }
-    println(s"\n  <<<<<< $playString >>>>>>")
+    printPlay(playString)
   }
 
   
@@ -242,7 +242,7 @@ case class DominoPlayer6(private val cubby: CubbyHole, private val human: Boolea
     
     if (entered == cantPlay) { 
       if (canPlayFromHand) { 
-        println("\nYou have a bone you can play. Try again.")
+        printError("You have a bone you can play. Try again.")
         requestBone
       } else { 
         None
@@ -254,11 +254,11 @@ case class DominoPlayer6(private val cubby: CubbyHole, private val human: Boolea
         if (handHasBone(bone)) { 
           boneOption
         } else { 
-          println("That's not in your hand. Try again.")
+          printError("That's not in your hand. Try again.")
           requestBone
         }
       } else { 
-        println("That's not a bone. Try again.")
+        printError("That's not a bone. Try again.")
         requestBone
       }
     }
@@ -277,7 +277,7 @@ case class DominoPlayer6(private val cubby: CubbyHole, private val human: Boolea
       case "0" => Play.LEFT 
       case "1" => Play.RIGHT 
       case _ => { 
-        println("Not a valid end. Try again.")
+        printError("Not a valid end. Try again.")
         requestEnd 
       }
     }
@@ -337,12 +337,12 @@ case class DominoPlayer6(private val cubby: CubbyHole, private val human: Boolea
     */
   private def displayHand: Unit = { 
     log("displayHand")
-    println("\n#####   " + getName + "'s turn" + "   #####")
+    printNewTurn(s"${getName}'s turn")
     if (numInHand == 0) { 
-      println("\nYour hand is empty.")
+      printInfo("Your hand is empty.")
     }
     else { 
-      println("\nYour hand: " + bonesToString(bones))
+      printInfo("Your hand: " + bonesToString(bones))
     }
   }
 
