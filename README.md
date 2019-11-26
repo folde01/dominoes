@@ -2,11 +2,16 @@
 
 This is a text-based dominoes game written in Scala. It is a piece of coursework I completed for the Software Design and Programming Module of the MSc Computer Science program at Birkbeck. The code can be found [here](https://github.com/folde01/dominoes/dominoes).
 
-## How to run it from the command line (tested on Ubuntu 16.04 with Scala installed):
+## How to run it from the command line 
 
+The following was tested on Ubuntu 16.04 with Scala installed:
+
+
+```
 git clone https://github.com/folde01/dominoes
 cd dominoes
 scala -cp . dominoes.DominoesApp6
+```
 
 ## Project notes:
 
@@ -20,5 +25,8 @@ It received a distinction mark, and while the user interface obviously needs imp
 
 ## To recompile:
 
-scalac -cp . dominoes/Logger.scala dominoes/ConsoleLogger.scala dominoes/DominoesPrintUtil6.scala dominoes/QuitException.scala dominoes/NewGameException.scala dominoes/players/DominoPlayer6.scala dominoes/DominoUI6.scala dominoes/DominoesApp6.scala
+In the same folder as above:
 
+```
+scalac -cp . dominoes/Logger.scala dominoes/ConsoleLogger.scala dominoes/DominoesPrintUtil6.scala dominoes/QuitException.scala dominoes/NewGameException.scala dominoes/players/DominoPlayer6.scala dominoes/DominoUI6.scala dominoes/DominoesApp6.scala
+```
