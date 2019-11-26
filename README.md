@@ -1,7 +1,24 @@
 # Dominoes
 
-One of the bigger pieces of my MSc coursework was a text-based dominoes game written in Scala, the code for which can be found [here](https://github.com/folde01/dominoes). The teacher provided the game engine, with the teaching aim apparently being "development isn't always so greenfield, so here's some code and an API for it, and some requirements for an interface... go write one." 
+This is a text-based dominoes game written in Scala. It is a piece of coursework I completed for the Software Design and Programming Module of the MSc Computer Science program at Birkbeck. The code can be found [here](https://github.com/folde01/dominoes/dominoes).
 
-Scala being both object-oriented and functional, you can find examples of each paradigm in the code, especially in the players sub-folder. It uses ScalaCheck for testing.
+## How to run it from the command line (tested on Ubuntu 16.04 with Scala installed):
 
-It received a distinction mark but I don't like how I organised the code - namely, six different 'versions' all dumped in the same folder. There should've at least been a folder for each version - or, even better, I should have just used git properly. That said, it played smoothly in both single-player and two-player mode without any obvious issues. Single-player is pretty dumb, though: the computer side does no more than play a valid move.
+git clone https://github.com/folde01/dominoes
+cd dominoes
+scala -cp . dominoes.DominoesApp6
+
+## Project notes:
+
+My assignment was to write the user interface in Scala. Java classes for game engine and an API for it were provided by the teacher (see dominoes.zip). 
+
+Most of my code is object-oriented, but functional programming is used in a few places - see, for example, in dominoes/players. 
+
+ScalaCheck was used for testing and Scaladoc for documentation.
+
+It received a distinction mark, and while the user interface obviously needs improvement it plays in both two-player (human vs human), single-player (human vs computer) and zero-player mode (computer vs computer, for testing purposes). The computer side does no more than play a valid move.
+
+## To recompile:
+
+scalac -cp . dominoes/Logger.scala dominoes/ConsoleLogger.scala dominoes/DominoesPrintUtil6.scala dominoes/QuitException.scala dominoes/NewGameException.scala dominoes/players/DominoPlayer6.scala dominoes/DominoUI6.scala dominoes/DominoesApp6.scala
+
